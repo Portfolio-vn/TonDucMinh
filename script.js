@@ -158,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initAvatarTilt();
     initRippleEffect();
     initTypewriter();
+    initChemicalCanvas();
 });
 
 // Loading Screen Control
@@ -465,3 +466,174 @@ function openLightbox(src) { document.getElementById('lightboxImg').src = src; l
 
 document.querySelector('.modal-close')?.addEventListener('click', () => { modal.classList.remove('active'); document.body.style.overflow = ''; });
 document.querySelector('.lightbox-close')?.addEventListener('click', () => lightbox.classList.remove('active'));
+
+// Interactive Chemical Bond Canvas Particle System
+function initChemicalCanvas() {
+    const canvas = document.getElementById('chemical-canvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const elements = [
+        { name: 'C', color: '#8b5cf6', radius: 8, valency: 4 }, // Carbon - Purple accent
+        { name: 'H', color: '#a78bfa', radius: 5, valency: 1 }, // Hydrogen - Light Purple
+        { name: 'O', color: '#ec4899', radius: 7, valency: 2 }, // Oxygen - Pink accent
+        { name: 'N', color: '#3b82f6', radius: 7.5, valency: 3 } // Nitrogen - Blue accent
+    ];
+
+    const mouse = { x: null, y: null, radius: 150 };
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        initParticles();
+    }
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.element = elements[Math.floor(Math.random() * elements.length)];
+            this.vx = (Math.random() - 0.5) * 0.6;
+            this.vy = (Math.random() - 0.5) * 0.6;
+            this.radius = this.element.radius;
+            this.color = this.element.color;
+            this.label = this.element.name;
+            this.angle = Math.random() * Math.PI * 2;
+            this.orbitSpeed = 0.02 + Math.random() * 0.03;
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.angle += this.orbitSpeed;
+
+            // Bounce off boundaries
+            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+            // Mouse interaction (gentle attraction)
+            if (mouse.x !== null && mouse.y !== null) {
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < mouse.radius) {
+                    const force = (mouse.radius - dist) / mouse.radius;
+                    this.x += (dx / dist) * force * 0.4;
+                    this.y += (dy / dist) * force * 0.4;
+                }
+            }
+        }
+
+        draw() {
+            // Draw faint outer valence electron shell orbit
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius + 6, 0, Math.PI * 2);
+            ctx.strokeStyle = `${this.color}15`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            // Draw valence electron dot on the outer shell
+            const electronX = this.x + (this.radius + 6) * Math.cos(this.angle);
+            const electronY = this.y + (this.radius + 6) * Math.sin(this.angle);
+            ctx.beginPath();
+            ctx.arc(electronX, electronY, 2, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+
+            // Draw Atom Nucleus
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = this.color;
+            ctx.fill();
+            ctx.shadowBlur = 0; // reset shadow
+
+            // Draw Element Symbol Label
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 9px "JetBrains Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(this.label, this.x, this.y + 0.5);
+        }
+    }
+
+    function initParticles() {
+        particles = [];
+        // Particle density based on screen resolution (much more sparse now)
+        const numberOfParticles = Math.floor((canvas.width * canvas.height) / 45000);
+        const count = Math.min(numberOfParticles, 25); // Cap to a lower value for minimalist clean look
+        for (let i = 0; i < count; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function drawBonds() {
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const p1 = particles[i];
+                const p2 = particles[j];
+                const dx = p1.x - p2.x;
+                const dy = p1.y - p2.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                const maxDist = 200; // Increased from 110 to allow links to form easily
+                if (dist < maxDist) {
+                    const alpha = (1 - dist / maxDist) * 0.15; // Subtle connections
+                    ctx.strokeStyle = `rgba(139, 92, 246, ${alpha})`;
+                    ctx.lineWidth = 1;
+
+                    if (dist < 70 && (p1.element.valency >= 2 && p2.element.valency >= 2)) {
+                        // Double Covalent Bond (draw two parallel lines)
+                        const offsetX = (dy / dist) * 2.5;
+                        const offsetY = (-dx / dist) * 2.5;
+
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x + offsetX, p1.y + offsetY);
+                        ctx.lineTo(p2.x + offsetX, p2.y + offsetY);
+                        ctx.moveTo(p1.x - offsetX, p1.y - offsetY);
+                        ctx.lineTo(p2.x - offsetX, p2.y - offsetY);
+                        ctx.stroke();
+                    } else {
+                        // Single Covalent Bond
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Update & draw particles
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+
+        // Draw connecting chemical bonds
+        drawBonds();
+
+        requestAnimationFrame(animate);
+    }
+
+    // Event listeners
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+    window.addEventListener('mouseleave', () => {
+        mouse.x = null;
+        mouse.y = null;
+    });
+
+    // Initialize
+    resizeCanvas();
+    animate();
+}
