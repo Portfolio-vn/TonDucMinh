@@ -332,6 +332,11 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.2; letter-spacing: -0.03em; }
 img.lazy { opacity: 0; transition: opacity 0.6s ease; }
 img.loaded { opacity: 1; }
 .footer { border-top: 1px solid var(--border-color); padding: 4rem 0; text-align: center; color: var(--text-secondary); background: rgba(255,255,255,0.4); }
+.footer-email { margin-bottom: 1.2rem; }
+.footer-email a { color: var(--text-primary); text-decoration: none; font-weight: 500; font-family: 'JetBrains Mono', monospace; display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; transition: var(--transition); padding: 0.6rem 1.4rem; border-radius: var(--radius-pill); border: 1px solid var(--border-color); background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(5px); }
+.footer-email a i { color: var(--accent); transition: transform 0.3s; }
+.footer-email a:hover { color: var(--accent); border-color: var(--accent); background: rgba(255, 255, 255, 0.9); box-shadow: 0 4px 15px var(--accent-glow); }
+.footer-email a:hover i { transform: scale(1.1) rotate(-10deg); }
 
 /* Modal & Lightbox Popups */
 .modal-overlay, .lightbox-overlay {

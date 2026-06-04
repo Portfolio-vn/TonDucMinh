@@ -93,10 +93,10 @@ const studentData = [
     {
         id: "act_duongtam",
         type: "activity",
-        title: "Dưỡng Tâm - Leadership",
+        title: "Dưỡng Tâm (Mind Cultivation) - Leadership",
         category: "Leadership",
         date: "2024-2025",
-        desc: "Participated in the Dưỡng Tâm Leadership program, demonstrating strong leadership and organizational skills through various community and team-building events.",
+        desc: "Participated in the Dưỡng Tâm (Mind Cultivation / Nurturing the Soul) Leadership program, demonstrating strong leadership and organizational skills through various community and team-building events.",
         thumb: "assets/images/duongtam-img1.jpg",
         assets: [
             "assets/images/duongtam-img1.jpg",
@@ -120,10 +120,10 @@ const studentData = [
     {
         id: "act_muadongam",
         type: "activity",
-        title: "Mùa đông ấm 2025",
+        title: "Mùa đông ấm (Warm Winter) 2025",
         category: "Community Service",
         date: "2025",
-        desc: "Participated in the 'Warm Winter' charity campaign, bringing necessary supplies, clothing, and support to disadvantaged communities in remote areas.",
+        desc: "Participated in the 'Mùa đông ấm' (Warm Winter) 2025 charity campaign, bringing necessary supplies, clothing, and support to disadvantaged communities in remote areas.",
         thumb: "assets/images/muadongam-img.jpg",
         assets: ["assets/images/muadongam-img.jpg"]
     },
