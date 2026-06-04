@@ -138,13 +138,13 @@ const studentData = [
         assets: [
             "assets/images/nhitw-photo.jpg",
             "assets/images/nhitw-1226.jpg",
-            "assets/images/nhitw-1227.jpg",
+            
             "assets/images/nhitw-1228.jpg",
             "assets/images/nhitw-1230.jpg",
-            "assets/images/nhitw-1232.jpg",
+            
             "assets/images/nhitw-1233.jpg",
             "assets/images/nhitw-1238.jpg",
-            "assets/images/nhitw-1239.jpg"
+            
         ]
     }
 ];
