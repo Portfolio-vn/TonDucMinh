@@ -1,273 +1,436 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duc Minh Ton — Chemical Engineering & Bio-Products</title>
-    <meta name="description" content="Portfolio of Ton Duc Minh - JDIE 2025 Double Gold Medalist, ICPC 2026 Gold Medalist, and Chemical Engineering researcher.">
-    
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MinhOS — Ton Duc Minh Interactive Portfolio</title>
+<meta name="description" content="Interactive retro-computer portfolio of Ton Duc Minh — JDIE 2025 Double Gold, ICPC 2026 Gold, Chemical Engineering researcher.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:radial-gradient(ellipse at 50% 120%,#2b2117 0%,#12100d 55%,#050505 100%);
+ font-family:Tahoma,'Segoe UI',sans-serif;display:flex;align-items:center;justify-content:center}
+/* ------------ monitor ------------ */
+#monitor{width:min(96vw,1500px);height:min(94vh,940px);background:linear-gradient(160deg,#d6cfc0,#b8b0a0 60%,#96907f);
+ border-radius:26px;padding:26px 26px 54px;box-shadow:0 30px 90px rgba(0,0,0,.75), inset 0 2px 4px rgba(255,255,255,.5), inset 0 -6px 14px rgba(0,0,0,.3);position:relative}
+#screen{width:100%;height:100%;background:#000;border-radius:14px;position:relative;overflow:hidden;
+ box-shadow:inset 0 0 40px rgba(0,0,0,.9), 0 0 0 4px #1a1712;}
+#scan{position:absolute;inset:0;pointer-events:none;z-index:900;border-radius:14px;
+ background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 2px,transparent 2px 4px)}
+#vig{position:absolute;inset:0;pointer-events:none;z-index:901;border-radius:14px;
+ box-shadow:inset 0 0 130px rgba(0,0,0,.55)}
+#glow{position:absolute;inset:0;pointer-events:none;z-index:902;border-radius:14px;opacity:.05;
+ background:linear-gradient(115deg,transparent 30%,#fff 48%,transparent 60%)}
+.flicker{animation:flick 4s infinite}
+@keyframes flick{0%,100%{opacity:1}97%{opacity:1}98%{opacity:.93}99%{opacity:1}}
+#bezelbar{position:absolute;left:26px;right:26px;bottom:12px;display:flex;align-items:center;justify-content:space-between}
+#brand{font-family:'VT323',monospace;color:#5c5546;font-size:20px;letter-spacing:3px}
+#pwr{display:flex;align-items:center;gap:12px}
+#led{width:11px;height:11px;border-radius:50%;background:#4a4436;box-shadow:inset 0 1px 2px rgba(0,0,0,.6)}
+#led.on{background:#3ddc55;box-shadow:0 0 10px #3ddc55}
+#powerbtn{width:44px;height:22px;border-radius:6px;border:0;cursor:pointer;background:linear-gradient(#8d8776,#6b6455);
+ box-shadow:0 2px 3px rgba(0,0,0,.5), inset 0 1px 1px rgba(255,255,255,.35)}
+#powerbtn:active{transform:translateY(1px)}
+/* ------------ phases ------------ */
+.phase{position:absolute;inset:0;display:none}
+.phase.on{display:block}
+#off{background:#020202;display:none;align-items:center;justify-content:center;cursor:pointer}
+#off.on{display:flex}
+#off span{font-family:'VT323',monospace;color:#233;font-size:26px;animation:pulse 2.2s infinite}
+@keyframes pulse{50%{color:#4a7}}
+#bios{background:#000;padding:34px 44px;font-family:'VT323',monospace;color:#cfcfcf;font-size:clamp(15px,1.9vh,22px);line-height:1.5;cursor:pointer}
+#bios .amber{color:#ffb000}
+#bios .ok{color:#3ddc55}
+#boot{background:#000;align-items:center;justify-content:center;flex-direction:column;gap:26px;cursor:pointer}
+#boot.on{display:flex}
+#bootlogo{font-family:'VT323',monospace;font-size:clamp(38px,7vh,68px);color:#fff}
+#bootlogo b{color:#f5b94c}
+#bar{width:min(420px,70%);height:22px;border:2px solid #888;padding:3px}
+#barin{height:100%;width:0;background:repeating-linear-gradient(90deg,#f5b94c 0 14px,#c98a1b 14px 28px)}
+#bootmsg{font-family:'VT323',monospace;color:#9aa;font-size:18px}
+/* ------------ desktop ------------ */
+#desktop{background:#0e7c72;background-image:radial-gradient(circle at 20% 30%,rgba(255,255,255,.05) 0 2px,transparent 3px),radial-gradient(circle at 70% 60%,rgba(255,255,255,.04) 0 2px,transparent 3px);cursor:default}
+#icons{position:absolute;top:12px;left:12px;display:flex;flex-direction:column;flex-wrap:wrap;gap:6px;height:calc(100% - 60px);align-content:flex-start}
+.icon{width:96px;padding:8px 4px;text-align:center;cursor:pointer;border:1px dotted transparent;user-select:none}
+.icon:hover{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.08)}
+.icon .em{font-size:34px;display:block;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.4))}
+.icon span{color:#fff;font-size:11.5px;text-shadow:1px 1px 1px #000;display:inline-block;margin-top:4px;line-height:1.25}
+/* windows */
+.win{position:absolute;min-width:280px;background:#c0c0c0;border:2px solid;border-color:#fff #404040 #404040 #fff;
+ box-shadow:4px 4px 0 rgba(0,0,0,.35);display:flex;flex-direction:column;max-width:96%;max-height:88%}
+.tbar{background:linear-gradient(90deg,#000080,#1660c8);color:#fff;padding:4px 6px;display:flex;align-items:center;gap:7px;cursor:grab;user-select:none}
+.tbar b{font-size:12.5px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}
+.tbar .tico{font-size:14px}
+.tbtn{width:20px;height:18px;background:#c0c0c0;border:2px solid;border-color:#fff #404040 #404040 #fff;
+ font-size:10px;font-weight:bold;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#000}
+.tbtn:active{border-color:#404040 #fff #fff #404040}
+.wbody{padding:10px;overflow:auto;font-size:13px;color:#111;background:#c0c0c0;flex:1}
+.wbody.white{background:#fff;border:2px solid;border-color:#404040 #fff #fff #404040;margin:6px;padding:12px}
+.win.inactive .tbar{background:linear-gradient(90deg,#7b7b7b,#a5a5a5)}
+.wbody h3{font-size:13.5px;margin:10px 0 4px;color:#000080}
+.wbody p{margin:6px 0;line-height:1.5}
+.wbody img.ph{max-width:100%;border:1px solid #808080;margin:6px 0;cursor:zoom-in}
+.rowitem{display:flex;gap:10px;border:1px solid #9a9a9a;background:#fff;padding:8px;margin-bottom:8px;align-items:flex-start}
+.rowitem .med{font-size:24px}
+.rowitem img{width:74px;height:74px;object-fit:cover;border:1px solid #808080;cursor:zoom-in;flex:0 0 74px}
+.rowitem b{font-size:12.5px}
+.rowitem .cat{display:inline-block;background:#000080;color:#fff;font-size:10px;padding:1px 7px;margin-left:6px}
+.rowitem p{font-size:12px;margin:4px 0 0;line-height:1.45}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.thumbs img{width:100%;height:82px;object-fit:cover;border:1px solid #808080;cursor:zoom-in}
+.statrow{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.statbox{border:2px solid;border-color:#808080 #fff #fff #808080;padding:8px 14px;text-align:center;flex:1;min-width:90px}
+.statbox b{display:block;font-size:20px;color:#000080}
+.statbox span{font-size:10.5px;color:#333}
+/* terminal */
+#termwrap{background:#000;color:#3ddc55;font-family:'VT323',monospace;font-size:17px;padding:10px;height:100%;overflow:auto;cursor:text}
+#termwrap .dim{color:#1d7a30}
+#termwrap .wht{color:#ccc}
+#termline{display:flex}
+#termin{background:transparent;border:0;outline:0;color:#3ddc55;font:inherit;flex:1}
+/* taskbar */
+#taskbar{position:absolute;left:0;right:0;bottom:0;height:42px;background:#c0c0c0;border-top:2px solid #fff;
+ display:flex;align-items:center;gap:6px;padding:4px 6px;z-index:800}
+#startbtn{display:flex;align-items:center;gap:6px;font-weight:bold;font-size:13px;padding:4px 12px;background:#c0c0c0;
+ border:2px solid;border-color:#fff #404040 #404040 #fff;cursor:pointer;user-select:none}
+#startbtn:active{border-color:#404040 #fff #fff #404040}
+#tasks{flex:1;display:flex;gap:5px;overflow:hidden}
+.task{max-width:170px;flex:1;font-size:12px;padding:4px 10px;background:#c0c0c0;border:2px solid;border-color:#fff #404040 #404040 #fff;
+ cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;user-select:none}
+.task.act{border-color:#404040 #fff #fff #404040;background:#dcdcdc;font-weight:bold}
+#clock{font-size:12.5px;padding:4px 12px;border:2px solid;border-color:#808080 #fff #fff #808080}
+#startmenu{position:absolute;bottom:44px;left:6px;width:250px;background:#c0c0c0;border:2px solid;border-color:#fff #404040 #404040 #fff;
+ box-shadow:4px 4px 0 rgba(0,0,0,.35);display:none;z-index:850}
+#startmenu.on{display:flex}
+#sside{background:linear-gradient(#000080,#1660c8);color:#fff;writing-mode:vertical-rl;transform:rotate(180deg);
+ font-weight:bold;font-size:17px;padding:10px 4px;letter-spacing:2px}
+#sitems{flex:1}
+.sitem{display:flex;gap:10px;align-items:center;padding:9px 12px;font-size:13px;cursor:pointer;color:#000;text-decoration:none}
+.sitem:hover{background:#000080;color:#fff}
+.sep{height:1px;background:#808080;margin:2px 8px;border-bottom:1px solid #fff}
+@media(max-width:700px){
+ #monitor{width:100vw;height:100vh;border-radius:0;padding:8px 8px 30px}
+ .icon{width:76px}
+ .win{left:2%!important;top:4%!important;width:96%!important}
+}
+</style>
 </head>
 <body>
-
-    <!-- Loading Screen -->
-    <div id="loader" class="loader">
-        <div class="loader-content">
-            <div class="loader-logo">M</div>
-            <div class="loader-text">TON DUC MINH</div>
-            <div class="loader-bar"><div class="loader-progress"></div></div>
+<div id="monitor">
+  <div id="screen" class="flicker">
+    <div id="off" class="phase on"><span>● CLICK POWER TO START ●</span></div>
+    <div id="bios" class="phase"></div>
+    <div id="boot" class="phase">
+      <div id="bootlogo">Minh<b>OS</b> 98</div>
+      <div id="bar"><div id="barin"></div></div>
+      <div id="bootmsg">Loading chemistry drivers…</div>
+    </div>
+    <div id="desktop" class="phase">
+      <div id="icons"></div>
+      <div id="winlayer" style="position:absolute;inset:0;bottom:42px"></div>
+      <div id="startmenu">
+        <div id="sside">MinhOS 98</div>
+        <div id="sitems">
+          <div class="sitem" data-app="about">👤 <span>About Duc Minh</span></div>
+          <div class="sitem" data-app="lab">⚗️ <span>Research Lab</span></div>
+          <div class="sitem" data-app="awards">🏆 <span>Awards</span></div>
+          <div class="sitem" data-app="acts">🌍 <span>Activities</span></div>
+          <div class="sitem" data-app="gallery">🖼️ <span>Photo Gallery</span></div>
+          <div class="sitem" data-app="term">🖥️ <span>MS-DOS Prompt</span></div>
+          <div class="sep"></div>
+          <a class="sitem" href="classic.html">📜 <span>Classic website</span></a>
+          <a class="sitem" href="mailto:tonminhbear@gmail.com">✉️ <span>Email Duc Minh</span></a>
+          <div class="sep"></div>
+          <div class="sitem" id="shutdownmi">⏻ <span>Shut Down…</span></div>
         </div>
+      </div>
+      <div id="taskbar">
+        <div id="startbtn">🧪 Start</div>
+        <div id="tasks"></div>
+        <div id="clock">--:--</div>
+      </div>
     </div>
+    <div id="scan"></div><div id="vig"></div><div id="glow"></div>
+  </div>
+  <div id="bezelbar">
+    <span id="brand">MINH-TRON  CRT-9600</span>
+    <div id="pwr"><span id="led"></span><button id="powerbtn" title="Power"></button></div>
+  </div>
+</div>
 
-    <!-- Ambient Color Orbs Background -->
-    <div class="particle-bg">
-        <canvas id="chemical-canvas" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.20; pointer-events: none;"></canvas>
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-        <div class="cyber-grid-overlay"></div>
-    </div>
+<script>
+/* ============ DATA (from Duc Minh's real profile) ============ */
+const DATA = [
+ {id:"jdie_2025",type:"award",medal:"🥇",title:"Gold Medal & Best Invention — JDIE 2025",category:"International",date:"2025",
+  desc:"Double Gold Medal and Best International Invention Award for BioPure Acne Care at the 12th Japan Design, Idea & Invention Expo in Tokyo. This all-natural biological cream was highly evaluated for its efficacy and sustainable sourcing.",
+  assets:["assets/images/jdie-cert-medal.jpg","assets/images/jdie-cert-inventive.jpg","assets/images/jdie-medal-inventive.jpg","assets/images/jdie-team.jpg","assets/images/jdie-personal.jpg"]},
+ {id:"icpc_2026",type:"award",medal:"🥇",title:"Gold Medal — ICPC 2026",category:"International",date:"2026",
+  desc:"Gold Medal at ICPC 2026 for researching herbal effervescent granules from Vietnamese medicinal plants (Folium Perillae & Herba Houttuyniae) to reduce fever. Achieved 96.5% clinical efficacy.",
+  assets:["assets/images/icpc-gold-medal.jpg","assets/images/icpc-cert-personal.jpg","assets/images/icpc-cert-team.jpg"]},
+ {id:"icq_2025",type:"award",medal:"🥇",title:"1st Prize — International Chemistry Quiz",category:"International",date:"2025",
+  desc:"Certificate of High Distinction at the ICQ 2025, organized by the Royal Australian Chemical Institute (RACI). Ranked 1st among all Vietnamese participants in the senior division.",
+  assets:["assets/images/icq-cert.jpg"]},
+ {id:"c3l6_2025",type:"award",medal:"🥇",title:"Gold Medal — C3L6 Chemistry Competition",category:"International",date:"2025–2026",
+  desc:"Gold Medal at the C3L6 International Chemistry Competition, demonstrating advanced analytical chemistry and complex problem-solving skills.",
+  assets:["assets/images/c3l6-cert.jpg"]},
+ {id:"academic_sp",type:"award",medal:"🎓",title:"Academic Excellence & Valedictorian",category:"Academic",date:"2024–2025",
+  desc:"Valedictorian (Chemistry) at HNUE High School for the Gifted. Ranked Top 5 in Chemistry at Hanoi-Amsterdam. Won District-level Excellence Award.",
+  assets:["assets/images/academic-akhoa-sp.jpg","assets/images/academic-cert-sp.jpg","assets/images/academic-top5-ams.jpg","assets/images/academic-vinhdanh.jpg"]},
+ {id:"act_hshk",type:"activity",medal:"🎤",title:"Speaker — High School Help Kit",category:"Leadership",date:"2024",
+  desc:"Guest speaker at Unboxing Day 2024 for High School Help Kit, a project with over 75,000 followers dedicated to helping middle-school students transition into high school smoothly.",
+  assets:["assets/images/hshk-photo.jpg","assets/images/hshk-cert.jpg"]},
+ {id:"act_amstronomy",type:"activity",medal:"🔭",title:"HR Department — Amstronomy Club",category:"Club Activity",date:"2025",
+  desc:"Human Resources member at the Hanoi-Amsterdam Astronomy Club (16,000+ followers). Co-organized stargazing events and science-communication workshops.",
+  assets:["assets/images/amstronomy-cert.jpg","assets/images/amstronomy-cert2.jpg"]},
+ {id:"act_duongtam",type:"activity",medal:"🧭",title:"Dưỡng Tâm (Mind Cultivation) — Leadership",category:"Leadership",date:"2024–2025",
+  desc:"Participated in the Dưỡng Tâm (Mind Cultivation) leadership program, demonstrating strong leadership and organizational skills through community and team-building events.",
+  assets:["assets/images/duongtam-img1.jpg","assets/images/duongtam-img2.jpg","assets/images/duongtam-img3.jpg","assets/images/duongtam-img4.jpg","assets/images/duongtam-img.jpg","assets/images/duongtam-cert.jpg"]},
+ {id:"act_care",type:"activity",medal:"🤝",title:"HR Member — C.A.R.E Project",category:"Community Service",date:"2025",
+  desc:"HR team member for the C.A.R.E Project, an initiative founded by Vietnamese students in Singapore/Vietnam for charity outreach and community mentorship.",
+  assets:["assets/images/care-cert.jpg"]},
+ {id:"act_muadongam",type:"activity",medal:"🧣",title:"Mùa đông ấm (Warm Winter) 2025",category:"Community Service",date:"2025",
+  desc:"Joined the 'Mùa đông ấm' 2025 charity campaign, bringing supplies, clothing and support to disadvantaged communities in remote areas.",
+  assets:["assets/images/muadongam-img.jpg"]},
+ {id:"act_nhitw",type:"activity",medal:"🏥",title:"Charity Volunteer — National Children's Hospital",category:"Community Service",date:"2026",
+  desc:"Volunteered at the National Children's Hospital in Hanoi: supporting pediatric patients, organizing activities and assisting hospital logistics.",
+  assets:["assets/images/nhitw-photo.jpg","assets/images/nhitw-1226.jpg","assets/images/nhitw-1228.jpg","assets/images/nhitw-1230.jpg","assets/images/nhitw-1233.jpg","assets/images/nhitw-1238.jpg"]},
+];
+const AWARDS = DATA.filter(d=>d.type==="award"), ACTS = DATA.filter(d=>d.type==="activity");
+const ALLIMG = [...new Set(DATA.flatMap(d=>d.assets))];
 
-    <!-- Floating Vertical Sidebar Navigation -->
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-logo">M</div>
-        <div class="nav-links">
-            <a href="#hero" class="nav-item active" data-tooltip="Home"><i class="fas fa-home"></i></a>
-            <a href="#about" class="nav-item" data-tooltip="About"><i class="fas fa-user-graduate"></i></a>
-            <a href="#research" class="nav-item" data-tooltip="Lab & Research"><i class="fas fa-flask"></i></a>
-            <a href="#awards" class="nav-item" data-tooltip="Awards"><i class="fas fa-medal"></i></a>
-            <a href="#activities" class="nav-item" data-tooltip="Activities"><i class="fas fa-globe-asia"></i></a>
-        </div>
-    </nav>
+/* ============ power / boot ============ */
+const $ = s=>document.querySelector(s);
+const phases = {off:$("#off"), bios:$("#bios"), boot:$("#boot"), desktop:$("#desktop")};
+let phase = "off", biosTimers = [];
+function show(p){Object.values(phases).forEach(e=>e.classList.remove("on"));phases[p].classList.add("on");phase=p;}
+const BIOSLINES = [
+ ["MinhBIOS (C) 2026 Chemical Systems Inc.","wht"],
+ ["BIOS Version 9.6.HSGS — Hanoi-Amsterdam Edition",""],
+ ["",""],
+ ["Main Processor : ChemCore(TM) i9.6 (GPA 9.6/10)","amber"],
+ ["Memory Test    : <mem>0</mem> KB OK",""],
+ ["",""],
+ ["Detecting IDE drives ...",""],
+ ["  Primary Master   : SAT-1550 SSD ......... <span class='ok'>OK</span>",""],
+ ["  Primary Slave    : JDIE-2025 GOLDx2 ..... <span class='ok'>OK</span>",""],
+ ["  Secondary Master : ICPC-2026 GOLD ....... <span class='ok'>OK</span>",""],
+ ["  Secondary Slave  : BIO-PURE LAB ......... <span class='ok'>OK</span>",""],
+ ["",""],
+ ["Top 5 Chemistry @ Hanoi-Amsterdam ......... <span class='ok'>VERIFIED</span>",""],
+ ["",""],
+ ["Press any key (or click) to continue _","amber"],
+];
+function powerOn(){
+ if(phase!=="off")return;
+ $("#led").classList.add("on");
+ show("bios");
+ const bios=$("#bios");bios.innerHTML="";
+ let t=0;
+ BIOSLINES.forEach((ln,i)=>{
+  biosTimers.push(setTimeout(()=>{
+    const d=document.createElement("div");
+    if(ln[1])d.className=ln[1];
+    d.innerHTML=ln[0]||"&nbsp;";
+    bios.appendChild(d);
+    if(ln[0].includes("<mem>")){
+      const memEl=d.querySelector("mem");let v=0;
+      const iv=setInterval(()=>{v+=4096;if(v>=65536){v=65536;clearInterval(iv);}memEl.textContent=v;},45);
+      biosTimers.push(iv);
+    }
+  }, t+=(i<3?260:210)));
+ });
+ biosTimers.push(setTimeout(bootUp, t+1400));
+}
+function bootUp(){
+ if(phase!=="bios")return;
+ biosTimers.forEach(clearTimeout);
+ show("boot");
+ let w=0;
+ const msgs=["Loading chemistry drivers…","Calibrating beakers…","Mounting C:\\PORTFOLIO…","Synthesizing UI molecules…","Starting MinhOS 98…"];
+ const iv=setInterval(()=>{
+   w+=Math.random()*14+6;if(w>100)w=100;
+   $("#barin").style.width=w+"%";
+   $("#bootmsg").textContent=msgs[Math.min(msgs.length-1,Math.floor(w/22))];
+   if(w>=100){clearInterval(iv);setTimeout(enterDesktop,420);}
+ },170);
+}
+function enterDesktop(){
+ if(phase==="desktop")return;
+ show("desktop");
+ if(!enterDesktop.done){enterDesktop.done=true;openApp("welcome");}
+}
+function powerOff(){
+ Object.keys(WINS).forEach(closeWin);
+ $("#led").classList.remove("on");
+ $("#barin").style.width="0";
+ show("off");enterDesktop.done=false;
+}
+$("#powerbtn").addEventListener("click",()=>{phase==="off"?powerOn():powerOff();});
+$("#off").addEventListener("click",powerOn);
+$("#bios").addEventListener("click",bootUp);
+document.addEventListener("keydown",e=>{if(phase==="bios"&&e.target.tagName!=="INPUT")bootUp();});
+$("#boot").addEventListener("click",enterDesktop);
 
-    <!-- Main Content Container -->
-    <main class="main-content">
+/* ============ windows ============ */
+const winlayer=$("#winlayer"), tasksEl=$("#tasks");
+let WINS={}, zTop=10, off=24;
+function openWin(id,icon,title,html,w){
+ if(WINS[id]){focusWin(id);return WINS[id];}
+ const el=document.createElement("div");el.className="win";el.style.width=(w||520)+"px";
+ el.style.left=Math.min(120+(off%180),340)+"px"; el.style.top=Math.min(20+(off%110),150)+"px"; off+=42;
+ el.innerHTML=`<div class="tbar"><span class="tico">${icon}</span><b>${title}</b>
+   <div class="tbtn" data-a="min">_</div><div class="tbtn" data-a="x">✕</div></div>
+   <div class="wbody">${html}</div>`;
+ winlayer.appendChild(el);
+ const tb=document.createElement("div");tb.className="task";tb.textContent=`${icon} ${title}`;
+ tb.onclick=()=>{ if(el.style.display==="none"){el.style.display="flex";focusWin(id);} else if(el.classList.contains("inactive")) focusWin(id); else {el.style.display="none";tb.classList.remove("act");} };
+ tasksEl.appendChild(tb);
+ WINS[id]={el,tb};
+ el.addEventListener("pointerdown",()=>focusWin(id));
+ el.querySelector('[data-a="x"]').onclick=e=>{e.stopPropagation();closeWin(id);};
+ el.querySelector('[data-a="min"]').onclick=e=>{e.stopPropagation();el.style.display="none";tb.classList.remove("act");};
+ // drag
+ const bar=el.querySelector(".tbar");
+ bar.addEventListener("pointerdown",e=>{
+   if(e.target.classList.contains("tbtn"))return;
+   const r=el.getBoundingClientRect(), pr=winlayer.getBoundingClientRect();
+   const dx=e.clientX-r.left, dy=e.clientY-r.top;
+   function mv(ev){el.style.left=Math.max(-60,Math.min(pr.width-80,ev.clientX-pr.left-dx))+"px";
+                   el.style.top=Math.max(0,Math.min(pr.height-34,ev.clientY-pr.top-dy))+"px";}
+   function up(){document.removeEventListener("pointermove",mv);document.removeEventListener("pointerup",up);}
+   document.addEventListener("pointermove",mv);document.addEventListener("pointerup",up);
+ });
+ focusWin(id);
+ return WINS[id];
+}
+function focusWin(id){
+ Object.entries(WINS).forEach(([k,v])=>{v.el.classList.toggle("inactive",k!==id);v.tb.classList.toggle("act",k===id);});
+ if(WINS[id]){WINS[id].el.style.zIndex=++zTop;WINS[id].el.style.display="flex";}
+}
+function closeWin(id){const w=WINS[id];if(!w)return;w.el.remove();w.tb.remove();delete WINS[id];}
 
-        <!-- Hero Section -->
-        <section id="hero" class="hero">
-            <!-- Sci-Fi Scientific Grid Deco -->
-            <div class="sci-deco-element target-crosshair top-left"></div>
-            <div class="sci-deco-element data-string top-right">[SYS_REF: 0X8B5CF6]</div>
-            
-            <div class="chemical-nodes">
-                <div class="c-node cn-1"></div>
-                <div class="c-node cn-2"></div>
-                <div class="c-node cn-3"></div>
-                <div class="c-node cn-4"></div>
-                <svg class="c-lines">
-                    <line class="l-1" x1="20%" y1="25%" x2="55%" y2="15%"></line>
-                    <line class="l-2" x1="55%" y1="15%" x2="80%" y2="45%"></line>
-                    <line class="l-3" x1="80%" y1="45%" x2="40%" y2="75%"></line>
-                    <line class="l-4" x1="40%" y1="75%" x2="20%" y2="25%"></line>
-                </svg>
-            </div>
+/* viewer */
+function viewImg(src,cap){
+ if(WINS.viewer)closeWin("viewer");
+ openWin("viewer","🖼️",cap||"Image Viewer",`<img class="ph" style="cursor:default" src="${src}" alt="">`,640);
+}
+document.addEventListener("click",e=>{
+ const im=e.target.closest("img[data-v]");
+ if(im){e.preventDefault();viewImg(im.dataset.v, im.alt||"Image Viewer");}
+});
 
-            <div class="hero-content">
-                <div class="hero-avatar-wrap">
-                    <div class="hero-avatar">
-                        <img src="assets/images/jdie-personal.jpg" alt="Duc Minh Ton">
-                    </div>
-                </div>
-                
-                <h1 class="hero-title"> <span class="gradient-text">Ton Duc Minh</span></h1>
-                
-                <div class="typewriter-box">
-                    <span id="typewriter-text" class="type-text"></span><span class="cursor">|</span>
-                </div>
-                
-                <p class="hero-desc">
-                    Chemistry Specialization Student at Hanoi-Amsterdam High School. 
-                    Passionate about <strong>Chemical Engineering</strong> and developing sustainable <strong>Bio-Product innovations</strong> for healthcare.
-                </p>
-                
-                <div class="hero-badges">
-                    <span class="badge-pill b-purple"><i class="fas fa-award"></i> JDIE 2025 Gold</span>
-                    <span class="badge-pill b-pink"><i class="fas fa-trophy"></i> ICPC 2026 Gold</span>
-                    <span class="badge-pill b-indigo"><i class="fas fa-flask"></i> Ams Chemistry</span>
-                    <span class="badge-pill b-blue"><i class="fas fa-seedling"></i> Bio-Products</span>
-                </div>
+/* ============ app contents ============ */
+function itemsHTML(list){
+ return list.map(d=>`<div class="rowitem">
+   <span class="med">${d.medal}</span>
+   <img src="${d.assets[0]}" data-v="${d.assets[0]}" alt="${d.title}" loading="lazy">
+   <div><b>${d.title}</b><span class="cat">${d.category}</span> <span style="font-size:11px;color:#555">· ${d.date}</span>
+   <p>${d.desc}</p>
+   ${d.assets.length>1?`<p style="font-size:11px;color:#000080;"><a href="#" onclick="openFolder('${d.id}');return false;">📁 Open folder (${d.assets.length} photos)</a></p>`:""}
+   </div></div>`).join("");
+}
+function openFolder(id){
+ const d=DATA.find(x=>x.id===id);
+ openWin("f_"+id,"📁",d.title,`<div class="thumbs">${d.assets.map(a=>`<img src="${a}" data-v="${a}" alt="${d.title}" loading="lazy">`).join("")}</div>`,560);
+}
+window.openFolder=openFolder;
+const APPS={
+ welcome:{icon:"💾",title:"Welcome.txt — Notepad",w:470,html:`
+   <div class="wbody white" style="margin:0">
+   <p><b>Welcome to MinhOS 98!</b> 🧪</p>
+   <p>You are inside the interactive portfolio computer of <b>Ton Duc Minh</b> — Chemistry specialization, Hanoi-Amsterdam High School for the Gifted.</p>
+   <p>▸ Double-click the desktop icons to explore.<br>▸ Drag windows around by their title bars.<br>▸ Type <b>help</b> in the MS-DOS Prompt.<br>▸ The Start menu has more goodies.</p>
+   <p style="color:#555;font-size:11px">Tip: the power button on the monitor actually works.</p></div>`},
+ about:{icon:"👤",title:"About Duc Minh — Properties",w:520,html:`
+   <img class="ph" src="assets/images/jdie-personal.jpg" data-v="assets/images/jdie-personal.jpg" alt="Duc Minh" style="max-height:230px;object-fit:cover;width:100%">
+   <div class="statrow">
+     <div class="statbox"><b>9.6</b><span>GPA (Grade 9–11)</span></div>
+     <div class="statbox"><b>1550</b><span>SAT Score</span></div>
+     <div class="statbox"><b>Top 5</b><span>Chemistry HN-Ams</span></div>
+   </div>
+   <p>I am studying in the <b>Chemistry Specialization</b> class at Hanoi-Amsterdam High School for the Gifted, aiming for <b>Chemical Engineering & Bio-Product Engineering</b>.</p>
+   <p>My research focuses on synthesizing <b>natural herbal pharmaceuticals</b> and developing environmental treatment systems. I lead the <b>BioPure Acne Care</b> research (🥇 Double Gold, JDIE 2025) and an <b>Herbal Effervescent Tablet</b> for fever reduction (🥇 Gold, ICPC 2026).</p>
+   <p>📧 <a href="mailto:tonminhbear@gmail.com">tonminhbear@gmail.com</a></p>`},
+ lab:{icon:"⚗️",title:"Research Lab",w:560,html:`
+   <h3>🧴 BioPure Acne Care — JDIE 2025 Double Gold</h3>
+   <p>All-natural biological anti-acne cream, awarded a Double Gold Medal and Best International Invention at the 12th Japan Design, Idea & Invention Expo (Tokyo). Highly evaluated for efficacy and sustainable sourcing.</p>
+   <img class="ph" src="assets/images/jdie-team.jpg" data-v="assets/images/jdie-team.jpg" alt="JDIE team" loading="lazy">
+   <h3>💊 Herbal Effervescent Tablet — ICPC 2026 Gold</h3>
+   <p>Formulation and evaluation of herbal effervescent granules from Vietnamese medicinal plants — <i>Folium Perillae</i> & <i>Herba Houttuyniae</i> — as a sustainable, eco-friendly fever reducer. Clinical efficacy: <b>96.5%</b>.</p>
+   <img class="ph" src="assets/images/icpc-gold-medal.jpg" data-v="assets/images/icpc-gold-medal.jpg" alt="ICPC gold" loading="lazy">`},
+ awards:{icon:"🏆",title:"Awards — 5 objects",w:600,get html(){return itemsHTML(AWARDS);}},
+ acts:{icon:"🌍",title:"Activities — 6 objects",w:600,get html(){return itemsHTML(ACTS);}},
+ gallery:{icon:"🖼️",title:"Photo Gallery",w:620,get html(){return `<div class="thumbs">${ALLIMG.map(a=>`<img src="${a}" data-v="${a}" alt="photo" loading="lazy">`).join("")}</div>`;}},
+ term:{icon:"🖥️",title:"MS-DOS Prompt",w:600,html:`<div id="termwrap">
+   <div class="dim">MinhOS 98 [Version 9.6.1550]<br>(C) 2026 Ton Duc Minh. Type <span class="wht">help</span> for commands.</div>
+   <div id="termout"></div>
+   <div id="termline"><span>C:\\MINH&gt;&nbsp;</span><input id="termin" autocomplete="off" spellcheck="false"></div></div>`},
+};
+function openApp(id){
+ const a=APPS[id];if(!a)return;
+ const w=openWin(id,a.icon,a.title,a.html,a.w);
+ if(id==="term"){
+   w.el.querySelector(".wbody").style.padding="0";
+   const tw=w.el.querySelector("#termwrap");
+   tw.addEventListener("click",()=>{const i=tw.querySelector("#termin");i&&i.focus();});
+   setTimeout(()=>{const i=tw.querySelector("#termin");i&&i.focus();},60);
+ }
+}
 
-                <div class="hero-buttons">
-                    <a href="#research" class="btn btn-primary"><i class="fas fa-flask"></i> View Research</a>
-                    <a href="#about" class="btn btn-outline"><i class="fas fa-user"></i> About Me</a>
-                </div>
-            </div>
-        </section>
+/* icons */
+const ICONS=[["about","👤","About<br>Duc Minh"],["lab","⚗️","Research<br>Lab"],["awards","🏆","Awards"],["acts","🌍","Activities"],
+ ["gallery","🖼️","Photo<br>Gallery"],["term","🖥️","MS-DOS<br>Prompt"],["classic","📜","Classic<br>Site"],["welcome","💾","Welcome.txt"]];
+const iconsEl=$("#icons");
+ICONS.forEach(([id,em,label])=>{
+ const d=document.createElement("div");d.className="icon";
+ d.innerHTML=`<span class="em">${em}</span><span>${label}</span>`;
+ const launch=()=>id==="classic"?location.href="classic.html":openApp(id);
+ d.addEventListener("dblclick",launch);
+ d.addEventListener("click",()=>{document.querySelectorAll(".icon").forEach(i=>i.style.background="");d.style.background="rgba(255,255,255,.15)";});
+ let lastTap=0;
+ d.addEventListener("touchend",()=>{const n=Date.now();if(n-lastTap<500)launch();lastTap=n;});
+ iconsEl.appendChild(d);
+});
 
-        <!-- About Section -->
-        <section id="about" class="section">
-            <div class="sci-deco-element formula-bg bottom-left">C₆H₁₂O₆ + 6O₂</div>
-            <div class="sci-deco-element target-crosshair bottom-right"></div>
+/* start menu */
+$("#startbtn").onclick=e=>{e.stopPropagation();$("#startmenu").classList.toggle("on");};
+document.addEventListener("click",e=>{if(!e.target.closest("#startmenu")&&!e.target.closest("#startbtn"))$("#startmenu").classList.remove("on");});
+document.querySelectorAll(".sitem[data-app]").forEach(s=>s.onclick=()=>{$("#startmenu").classList.remove("on");openApp(s.dataset.app);});
+$("#shutdownmi").onclick=()=>{$("#startmenu").classList.remove("on");powerOff();};
 
-            <div class="container">
-                <h2 class="section-title reveal">Academic <span class="gradient-text">Profile</span></h2>
-                <p class="section-subtitle reveal">Academic metrics and international target qualifications</p>
-                
-                <div class="about-grid">
-                    <div class="stats-col">
-                        <div class="stat-card reveal-stagger">
-                            <div class="stat-value"><span class="counter-val" data-target="9.6">0.0</span></div>
-                            <div class="stat-label">GPA (Grade 9-11)</div>
-                        </div>
-                        <div class="stat-card reveal-stagger">
-                            <div class="stat-value"><span class="counter-val" data-target="1550">0</span></div>
-                            <div class="stat-label">SAT Score</div>
-                        </div>
-                        <div class="stat-card reveal-stagger">
-                            <div class="stat-value"><span class="counter-val" data-target="5">0</span></div>
-                            <div class="stat-label">Top Chemistry HN-Ams</div>
-                        </div>
-                    </div>
-                    
-                    <div class="about-content reveal">
-                        <p>
-                            I am currently studying in the <span class="highlight">Chemistry Specialization</span> class at Hanoi-Amsterdam High School for the Gifted. My goal is to pursue higher education in Chemical Engineering and Bio-Product Engineering.
-                        </p>
-                        <p>
-                            My core research focus is on synthesizing <span class="highlight">natural herbal pharmaceuticals</span> and developing environmental treatment systems. I believe that applied chemistry is the most direct way to solve modern healthcare challenges.
-                        </p>
-                        <p>
-                            I am the lead researcher of the <strong>BioPure Acne Care</strong> cream (🥇 Double Gold at JDIE 2025) and an <strong>Herbal Effervescent Tablet</strong> for fever reduction (🥇 Gold at ICPC 2026).
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
+/* clock */
+setInterval(()=>{const d=new Date();$("#clock").textContent=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});},1000);
 
-        <!-- Research Lab Section -->
-        <section id="research" class="section">
-            <div class="sci-deco-element matrix-grid top-left"></div>
-            
-            <div class="container">
-                <h2 class="section-title reveal">Research <span class="gradient-text">Innovation</span></h2>
-                <p class="section-subtitle reveal">Interactive Formulation Lab: Herbal Effervescent Tablet</p>
-                
-                <div class="lab-container reveal">
-                    <div class="lab-info">
-                        <div class="card-badge" style="position:static; display:inline-block; margin-bottom:1rem;">ICPC 2026 Gold Medal Project</div>
-                        <h3>Folium Perillae & Herba Houttuyniae</h3>
-                        <p>
-                            This project focuses on the formulation and evaluation of herbal effervescent granules from Vietnamese medicinal plants as a sustainable, eco-friendly fever reducer.
-                        </p>
-                        <button class="btn btn-outline" onclick="openModal('icpc_2026')" style="margin-top:1rem;">
-                            <i class="fas fa-file-alt"></i> View Documentation
-                        </button>
-                    </div>
-                    
-                    <div class="lab-widget">
-                        <div class="lab-slider">
-                            <label>Folium Perillae (Perilla) <span><span id="val-perilla">50</span>%</span></label>
-                            <input type="range" id="slide-perilla" min="10" max="90" value="50">
-                        </div>
-                        <div class="lab-slider">
-                            <label>Herba Houttuyniae (Houttuynia) <span><span id="val-houttuynia">50</span>%</span></label>
-                            <input type="range" id="slide-houttuynia" min="10" max="90" value="50">
-                        </div>
-                        
-                        <div class="beaker-wrap">
-                            <div class="beaker">
-                                <div class="liquid" id="beaker-fluid"></div>
-                                <div class="bubbles" id="fever-bubbles"></div>
-                            </div>
-                        </div>
-                        
-                        <button class="btn btn-primary" style="width:100%; justify-content:center; margin-bottom:1rem;" onclick="triggerEffervescent()">
-                            Synthesize Formula
-                        </button>
-                        
-                        <div class="lab-result" id="efficacy-output">
-                            Clinical Efficacy Report will appear here after synthesis.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Awards Section -->
-        <section id="awards" class="section">
-            <div class="sci-deco-element formula-bg top-right">R = N_A * e / F</div>
-            
-            <div class="container">
-                <h2 class="section-title reveal">Global <span class="gradient-text">Recognition</span></h2>
-                <p class="section-subtitle reveal">International awards and academic achievements</p>
-                
-                <div class="grid-cards" id="awards-grid">
-                    <!-- Populated by JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Activities Section -->
-        <section id="activities" class="section">
-            <div class="sci-deco-element target-crosshair top-right"></div>
-            <div class="sci-deco-element data-string bottom-left">[SECTION_MAP: 0X04]</div>
-
-            <div class="container">
-                <h2 class="section-title reveal">Community & <span class="gradient-text">Leadership</span></h2>
-                <p class="section-subtitle reveal">STEM outreach, clubs, and volunteer work</p>
-                
-                <!-- Fixed & Enhanced Glassmorphic Horizontal Filter Tabs -->
-                <div class="filter-tabs-container reveal">
-                    <div class="filter-tabs">
-                        <button class="filter-btn active" data-filter="all"><i class="fas fa-layer-group"></i> All Activities</button>
-                        <button class="filter-btn" data-filter="Leadership"><i class="fas fa-fingerprint"></i> Leadership</button>
-                        <button class="filter-btn" data-filter="Community Service"><i class="fas fa-heartbeat"></i> Community Service</button>
-                        <button class="filter-btn" data-filter="Club Activity"><i class="fas fa-atom"></i> Clubs</button>
-                    </div>
-                </div>
-                
-                <div class="grid-cards" id="activities-grid">
-                    <!-- Populated by JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="footer reveal">
-            <div class="container">
-                <div class="logo" style="justify-content:center; margin-bottom:1rem;">
-                    <div class="logo-icon">Minh</div>
-                    Ton Duc Minh
-                </div>
-                <p class="footer-email">
-                    <a href="mailto:tonminhbear@gmail.com">
-                        <i class="fas fa-envelope"></i> tonminhbear@gmail.com
-                    </a>
-                </p>
-                <p>portfolio 2026</p>
-                <p>Hanoi-Amsterdam High School for the Gifted</p>
-            </div>
-        </footer>
-    </main>
-
-    <!-- Universal Modal System -->
-    <div class="modal-overlay" id="mainModal" aria-hidden="true" role="dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="card-badge" id="modalBadge" style="position:static; margin:0;">Category</div>
-                <button class="modal-close" aria-label="Close modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="modal-media" id="modalMedia"></div>
-                <div class="modal-info">
-                    <h3 id="modalTitle">Title</h3>
-                    <p style="color:var(--accent); font-weight:600; margin-bottom:1rem; font-size:0.9rem;" id="modalDate"></p>
-                    <div id="modalDesc"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Lightbox System -->
-    <div class="lightbox-overlay" id="lightbox" aria-hidden="true">
-        <button class="lightbox-close">&times;</button>
-        <img src="" alt="Fullscreen view" class="lightbox-img" id="lightboxImg">
-    </div>
-
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="script.js"></script>
+/* terminal */
+const CMD={
+ help:()=>`Available commands:
+  <span class="wht">about</span>      - who is Duc Minh<br>  <span class="wht">awards</span>     - list awards<br>  <span class="wht">research</span>   - research projects<br>  <span class="wht">activities</span> - community & leadership<br>  <span class="wht">gallery</span>    - open photo gallery<br>  <span class="wht">contact</span>    - contact info<br>  <span class="wht">ver</span> / <span class="wht">date</span> / <span class="wht">cls</span> / <span class="wht">minh</span><br>  <span class="wht">reboot</span> / <span class="wht">shutdown</span>`,
+ about:()=>`TON DUC MINH — Chemistry specialization, Hanoi-Amsterdam HS for the Gifted.<br>GPA 9.6 | SAT 1550 | Top 5 Chemistry HN-Ams.<br>Aiming for Chemical Engineering & Bio-Product Engineering.`,
+ awards:()=>AWARDS.map(a=>` ${a.medal} ${a.title} (${a.date})`).join("<br>"),
+ research:()=>` [1] BioPure Acne Care — JDIE 2025 Double Gold (Tokyo)<br> [2] Herbal Effervescent Tablet — ICPC 2026 Gold (96.5% efficacy)`,
+ activities:()=>ACTS.map(a=>` ${a.medal} ${a.title} (${a.date})`).join("<br>"),
+ gallery:()=>{openApp("gallery");return "Opening Photo Gallery…";},
+ contact:()=>`E-mail: tonminhbear@gmail.com<br>School: Hanoi-Amsterdam High School for the Gifted`,
+ ver:()=>"MinhOS 98 [Version 9.6.1550]",
+ date:()=>new Date().toString(),
+ minh:()=>`<span class="wht">&nbsp;__  __ ___ _  _ _  _<br>|  \\/  |_ _| \\| | || |<br>| |\\/| || || .\` | __ |<br>|_|  |_|___|_|\\_|_||_|  chemist · inventor · student</span>`,
+ cls:o=>{o.innerHTML="";return "";},
+ reboot:()=>{setTimeout(()=>{powerOff();setTimeout(powerOn,300);},400);return "Rebooting…";},
+ shutdown:()=>{setTimeout(powerOff,500);return "It is now safe to turn off your computer.";},
+};
+document.addEventListener("keydown",e=>{
+ if(e.target.id!=="termin"||e.key!=="Enter")return;
+ const inp=e.target, wrap=inp.closest("#termwrap"), out=wrap.querySelector("#termout"), v=inp.value.trim().toLowerCase();
+ out.innerHTML+=`<div><span class="dim">C:\\MINH&gt;</span> ${inp.value.replace(/</g,"&lt;")}</div>`;
+ if(v){
+   const fn=CMD[v];
+   out.innerHTML+=`<div>${fn?fn(out):`'${v}' is not recognized as an internal command. Type <span class="wht">help</span>.`}</div>`;
+ }
+ inp.value="";
+ wrap.scrollTop=1e9;
+});
+</script>
 </body>
 </html>
