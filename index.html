@@ -18,9 +18,11 @@ body{background:radial-gradient(ellipse at 50% 120%,#2b2117 0%,#12100d 55%,#0505
 #screen{width:100%;height:100%;background:#000;border-radius:14px;position:relative;overflow:hidden;
  box-shadow:inset 0 0 40px rgba(0,0,0,.9), 0 0 0 4px #1a1712;}
 #scan{position:absolute;inset:0;pointer-events:none;z-index:900;border-radius:14px;
- background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 2px,transparent 2px 4px)}
+ background:repeating-linear-gradient(0deg,rgba(0,0,0,.045) 0 1px,transparent 1px 4px)}
 #vig{position:absolute;inset:0;pointer-events:none;z-index:901;border-radius:14px;
- box-shadow:inset 0 0 130px rgba(0,0,0,.55)}
+ box-shadow:inset 0 0 90px rgba(0,0,0,.28)}
+body.nocrt #scan,body.nocrt #vig,body.nocrt #glow{display:none}
+body.nocrt #screen{animation:none}
 #glow{position:absolute;inset:0;pointer-events:none;z-index:902;border-radius:14px;opacity:.05;
  background:linear-gradient(115deg,transparent 30%,#fff 48%,transparent 60%)}
 .flicker{animation:flick 4s infinite}
@@ -59,7 +61,7 @@ body{background:radial-gradient(ellipse at 50% 120%,#2b2117 0%,#12100d 55%,#0505
 .icon span{color:#fff;font-size:11.5px;text-shadow:1px 1px 1px #000;display:inline-block;margin-top:4px;line-height:1.25}
 /* windows */
 .win{position:absolute;min-width:280px;background:#c0c0c0;border:2px solid;border-color:#fff #404040 #404040 #fff;
- box-shadow:4px 4px 0 rgba(0,0,0,.35);display:flex;flex-direction:column;max-width:96%;max-height:88%}
+ box-shadow:4px 4px 0 rgba(0,0,0,.35);display:flex;flex-direction:column;max-width:96%;max-height:88%;pointer-events:auto}
 .tbar{background:linear-gradient(90deg,#000080,#1660c8);color:#fff;padding:4px 6px;display:flex;align-items:center;gap:7px;cursor:grab;user-select:none}
 .tbar b{font-size:12.5px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}
 .tbar .tico{font-size:14px}
@@ -129,7 +131,7 @@ body{background:radial-gradient(ellipse at 50% 120%,#2b2117 0%,#12100d 55%,#0505
     </div>
     <div id="desktop" class="phase">
       <div id="icons"></div>
-      <div id="winlayer" style="position:absolute;inset:0;bottom:42px"></div>
+      <div id="winlayer" style="position:absolute;inset:0;bottom:42px;pointer-events:none"></div>
       <div id="startmenu">
         <div id="sside">MinhOS 98</div>
         <div id="sitems">
@@ -142,6 +144,7 @@ body{background:radial-gradient(ellipse at 50% 120%,#2b2117 0%,#12100d 55%,#0505
           <div class="sep"></div>
           <a class="sitem" href="classic.html">📜 <span>Classic website</span></a>
           <a class="sitem" href="mailto:tonminhbear@gmail.com">✉️ <span>Email Duc Minh</span></a>
+          <div class="sitem" id="crtmi">📺 <span>CRT effect: On</span></div>
           <div class="sep"></div>
           <div class="sitem" id="shutdownmi">⏻ <span>Shut Down…</span></div>
         </div>
@@ -341,7 +344,7 @@ const APPS={
    <div class="wbody white" style="margin:0">
    <p><b>Welcome to MinhOS 98!</b> 🧪</p>
    <p>You are inside the interactive portfolio computer of <b>Ton Duc Minh</b> — Chemistry specialization, Hanoi-Amsterdam High School for the Gifted.</p>
-   <p>▸ Double-click the desktop icons to explore.<br>▸ Drag windows around by their title bars.<br>▸ Type <b>help</b> in the MS-DOS Prompt.<br>▸ The Start menu has more goodies.</p>
+   <p>▸ Click the desktop icons to explore.<br>▸ Drag windows around by their title bars.<br>▸ Type <b>help</b> in the MS-DOS Prompt.<br>▸ Start menu: more goodies + turn the CRT effect off if the stripes bother you.</p>
    <p style="color:#555;font-size:11px">Tip: the power button on the monitor actually works.</p></div>`},
  about:{icon:"👤",title:"About Duc Minh — Properties",w:520,html:`
    <img class="ph" src="assets/images/jdie-personal.jpg" data-v="assets/images/jdie-personal.jpg" alt="Duc Minh" style="max-height:230px;object-fit:cover;width:100%">
@@ -387,10 +390,7 @@ ICONS.forEach(([id,em,label])=>{
  const d=document.createElement("div");d.className="icon";
  d.innerHTML=`<span class="em">${em}</span><span>${label}</span>`;
  const launch=()=>id==="classic"?location.href="classic.html":openApp(id);
- d.addEventListener("dblclick",launch);
- d.addEventListener("click",()=>{document.querySelectorAll(".icon").forEach(i=>i.style.background="");d.style.background="rgba(255,255,255,.15)";});
- let lastTap=0;
- d.addEventListener("touchend",()=>{const n=Date.now();if(n-lastTap<500)launch();lastTap=n;});
+ d.addEventListener("click",()=>{document.querySelectorAll(".icon").forEach(i=>i.style.background="");d.style.background="rgba(255,255,255,.15)";launch();});
  iconsEl.appendChild(d);
 });
 
@@ -399,6 +399,10 @@ $("#startbtn").onclick=e=>{e.stopPropagation();$("#startmenu").classList.toggle(
 document.addEventListener("click",e=>{if(!e.target.closest("#startmenu")&&!e.target.closest("#startbtn"))$("#startmenu").classList.remove("on");});
 document.querySelectorAll(".sitem[data-app]").forEach(s=>s.onclick=()=>{$("#startmenu").classList.remove("on");openApp(s.dataset.app);});
 $("#shutdownmi").onclick=()=>{$("#startmenu").classList.remove("on");powerOff();};
+$("#crtmi").onclick=()=>{
+ document.body.classList.toggle("nocrt");
+ $("#crtmi").querySelector("span").textContent="CRT effect: "+(document.body.classList.contains("nocrt")?"Off":"On");
+};
 
 /* clock */
 setInterval(()=>{const d=new Date();$("#clock").textContent=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});},1000);
