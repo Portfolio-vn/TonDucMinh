@@ -54,13 +54,13 @@ body.nocrt #screen{animation:none}
 #barin{height:100%;width:0;background:repeating-linear-gradient(90deg,#f5b94c 0 14px,#c98a1b 14px 28px)}
 #bootmsg{font-family:'VT323',monospace;color:#9aa;font-size:18px}
 /* ------------ desktop ------------ */
-#desktop{background:radial-gradient(ellipse at 50% 20%,#0c1a2e 0%,#060c17 45%,#02050a 100%);cursor:default;position:relative;overflow:hidden}
+#desktop{background:radial-gradient(ellipse at 50% 20%,#0c1a2e 0%,#060c17 45%,#02050a 100%);cursor:default;overflow:hidden}
 #molbg{position:absolute;inset:0;z-index:0;pointer-events:none;display:block}
-#icons{position:absolute;top:16px;left:16px;display:flex;flex-direction:column;gap:20px;z-index:1}
-.icon{width:104px;padding:8px 6px;text-align:center;cursor:pointer;border:1px dotted transparent;border-radius:4px;user-select:none}
+#icons{position:absolute;top:14px;left:14px;display:flex;flex-direction:column;flex-wrap:wrap;gap:10px 6px;height:calc(100% - 66px);align-content:flex-start;z-index:1}
+.icon{width:92px;padding:8px 5px;text-align:center;cursor:pointer;border:1px dotted transparent;border-radius:4px;user-select:none}
 .icon:hover{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.1)}
-.icon .em{font-size:44px;display:block;filter:drop-shadow(0 0 10px rgba(61,220,85,.5)) drop-shadow(2px 2px 0 rgba(0,0,0,.5))}
-.icon span{color:#fff;font-size:12.5px;text-shadow:1px 1px 1px #000;display:inline-block;margin-top:6px;line-height:1.3}
+.icon .em{font-size:38px;display:block;filter:drop-shadow(0 0 10px rgba(61,220,85,.5)) drop-shadow(2px 2px 0 rgba(0,0,0,.5))}
+.icon span{color:#fff;font-size:11.5px;text-shadow:1px 1px 1px #000;display:inline-block;margin-top:5px;line-height:1.25}
 /* windows */
 .win{position:absolute;min-width:280px;background:#c0c0c0;border:2px solid;border-color:#fff #404040 #404040 #fff;
  box-shadow:4px 4px 0 rgba(0,0,0,.35);display:flex;flex-direction:column;max-width:96%;max-height:88%;pointer-events:auto}
@@ -385,6 +385,7 @@ function powerOff(){
 }
 $("#powerbtn").addEventListener("click",()=>{phase==="off"?powerOn():powerOff();});
 $("#off").addEventListener("click",powerOn);
+setTimeout(()=>{if(phase==="off")powerOn();},700);
 $("#bios").addEventListener("click",bootUp);
 document.addEventListener("keydown",e=>{if(phase==="bios"&&e.target.tagName!=="INPUT")bootUp();});
 $("#boot").addEventListener("click",enterDesktop);
@@ -522,8 +523,9 @@ function openApp(id){
 }
 
 /* icons */
-const ICONS=[["recycle","🗑️","Recycle<br>Bin"],["mydocs","📁","My<br>Documents"],["term","🖥️","MS-DOS<br>Prompt"],
- ["lab","🧪","Periodic<br>Table.lnk"],["classic","📜","Classic<br>website.url"]];
+const ICONS=[["recycle","🗑️","Recycle<br>Bin"],["mydocs","📁","My<br>Documents"],["about","👤","About<br>Duc Minh"],
+ ["lab","⚗️","Research<br>Lab"],["awards","🏆","Awards"],["acts","🌍","Activities"],
+ ["gallery","🖼️","Photo<br>Gallery"],["term","🖥️","MS-DOS<br>Prompt"],["classic","📜","Classic<br>website.url"]];
 const iconsEl=$("#icons");
 ICONS.forEach(([id,em,label])=>{
  const d=document.createElement("div");d.className="icon";
