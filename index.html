@@ -10,11 +10,11 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;overflow:hidden}
-body{background:radial-gradient(ellipse at 50% 120%,#2b2117 0%,#12100d 55%,#050505 100%);
+body{background:radial-gradient(ellipse at 50% 120%,#0a1626 0%,#050a13 55%,#000000 100%);
  font-family:Tahoma,'Segoe UI',sans-serif;display:flex;align-items:center;justify-content:center}
 /* ------------ monitor ------------ */
-#monitor{width:min(96vw,1500px);height:min(94vh,940px);background:linear-gradient(160deg,#d6cfc0,#b8b0a0 60%,#96907f);
- border-radius:26px;padding:26px 26px 54px;box-shadow:0 30px 90px rgba(0,0,0,.75), inset 0 2px 4px rgba(255,255,255,.5), inset 0 -6px 14px rgba(0,0,0,.3);position:relative}
+#monitor{width:min(96vw,1500px);height:min(94vh,940px);background:linear-gradient(160deg,#3a3d43,#232529 60%,#121316);
+ border-radius:26px;padding:26px 26px 54px;box-shadow:0 30px 90px rgba(0,0,0,.85), inset 0 2px 4px rgba(255,255,255,.12), inset 0 -6px 14px rgba(0,0,0,.5);position:relative}
 #screen{width:100%;height:100%;background:#000;border-radius:14px;position:relative;overflow:hidden;
  box-shadow:inset 0 0 40px rgba(0,0,0,.9), 0 0 0 4px #1a1712;}
 #scan{position:absolute;inset:0;pointer-events:none;z-index:900;border-radius:14px;
@@ -28,20 +28,21 @@ body.nocrt #screen{animation:none}
 .flicker{animation:flick 4s infinite}
 @keyframes flick{0%,100%{opacity:1}97%{opacity:1}98%{opacity:.93}99%{opacity:1}}
 #bezelbar{position:absolute;left:26px;right:26px;bottom:12px;display:flex;align-items:center;justify-content:space-between}
-#brand{font-family:'VT323',monospace;color:#5c5546;font-size:20px;letter-spacing:3px}
+#brand{font-family:'VT323',monospace;color:#7c8a97;font-size:20px;letter-spacing:3px;text-shadow:0 0 6px rgba(61,220,85,.35)}
 #pwr{display:flex;align-items:center;gap:12px}
-#led{width:11px;height:11px;border-radius:50%;background:#4a4436;box-shadow:inset 0 1px 2px rgba(0,0,0,.6)}
+#led{width:11px;height:11px;border-radius:50%;background:#2a2d30;box-shadow:inset 0 1px 2px rgba(0,0,0,.6)}
 #led.on{background:#3ddc55;box-shadow:0 0 10px #3ddc55}
-#powerbtn{width:44px;height:22px;border-radius:6px;border:0;cursor:pointer;background:linear-gradient(#8d8776,#6b6455);
- box-shadow:0 2px 3px rgba(0,0,0,.5), inset 0 1px 1px rgba(255,255,255,.35)}
+#powerbtn{width:44px;height:22px;border-radius:6px;border:0;cursor:pointer;background:linear-gradient(#5c6066,#33363a);
+ box-shadow:0 2px 3px rgba(0,0,0,.6), inset 0 1px 1px rgba(255,255,255,.3), 0 0 0 1px rgba(0,0,0,.5), 0 0 10px rgba(61,220,85,.3)}
+#powerbtn:hover{box-shadow:0 2px 3px rgba(0,0,0,.6), inset 0 1px 1px rgba(255,255,255,.35), 0 0 0 1px rgba(0,0,0,.5), 0 0 16px rgba(61,220,85,.55)}
 #powerbtn:active{transform:translateY(1px)}
 /* ------------ phases ------------ */
 .phase{position:absolute;inset:0;display:none}
 .phase.on{display:block}
-#off{background:#020202;display:none;align-items:center;justify-content:center;cursor:pointer}
+#off{background:radial-gradient(ellipse at 50% 50%,#0a1a12 0%,#020402 70%);display:none;align-items:center;justify-content:center;cursor:pointer}
 #off.on{display:flex}
-#off span{font-family:'VT323',monospace;color:#233;font-size:26px;animation:pulse 2.2s infinite}
-@keyframes pulse{50%{color:#4a7}}
+#off span{font-family:'VT323',monospace;color:#3ddc55;font-size:26px;text-shadow:0 0 14px rgba(61,220,85,.7);animation:pulse 2.2s infinite}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
 #bios{background:#000;padding:34px 44px;font-family:'VT323',monospace;color:#cfcfcf;font-size:clamp(15px,1.9vh,22px);line-height:1.5;cursor:pointer}
 #bios .amber{color:#ffb000}
 #bios .ok{color:#3ddc55}
@@ -53,15 +54,17 @@ body.nocrt #screen{animation:none}
 #barin{height:100%;width:0;background:repeating-linear-gradient(90deg,#f5b94c 0 14px,#c98a1b 14px 28px)}
 #bootmsg{font-family:'VT323',monospace;color:#9aa;font-size:18px}
 /* ------------ desktop ------------ */
-#desktop{background:#0e7c72;background-image:radial-gradient(circle at 20% 30%,rgba(255,255,255,.05) 0 2px,transparent 3px),radial-gradient(circle at 70% 60%,rgba(255,255,255,.04) 0 2px,transparent 3px);cursor:default}
-#icons{position:absolute;top:12px;left:12px;display:flex;flex-direction:column;flex-wrap:wrap;gap:6px;height:calc(100% - 60px);align-content:flex-start}
-.icon{width:96px;padding:8px 4px;text-align:center;cursor:pointer;border:1px dotted transparent;user-select:none}
-.icon:hover{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.08)}
-.icon .em{font-size:34px;display:block;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.4))}
-.icon span{color:#fff;font-size:11.5px;text-shadow:1px 1px 1px #000;display:inline-block;margin-top:4px;line-height:1.25}
+#desktop{background:radial-gradient(ellipse at 50% 20%,#0c1a2e 0%,#060c17 45%,#02050a 100%);cursor:default;position:relative;overflow:hidden}
+#molbg{position:absolute;inset:0;z-index:0;pointer-events:none;display:block}
+#icons{position:absolute;top:16px;left:16px;display:flex;flex-direction:column;gap:20px;z-index:1}
+.icon{width:104px;padding:8px 6px;text-align:center;cursor:pointer;border:1px dotted transparent;border-radius:4px;user-select:none}
+.icon:hover{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.1)}
+.icon .em{font-size:44px;display:block;filter:drop-shadow(0 0 10px rgba(61,220,85,.5)) drop-shadow(2px 2px 0 rgba(0,0,0,.5))}
+.icon span{color:#fff;font-size:12.5px;text-shadow:1px 1px 1px #000;display:inline-block;margin-top:6px;line-height:1.3}
 /* windows */
 .win{position:absolute;min-width:280px;background:#c0c0c0;border:2px solid;border-color:#fff #404040 #404040 #fff;
  box-shadow:4px 4px 0 rgba(0,0,0,.35);display:flex;flex-direction:column;max-width:96%;max-height:88%;pointer-events:auto}
+.win.maxed{left:0!important;top:0!important;width:100%!important;height:100%!important;max-width:100%;max-height:100%}
 .tbar{background:linear-gradient(90deg,#000080,#1660c8);color:#fff;padding:4px 6px;display:flex;align-items:center;gap:7px;cursor:grab;user-select:none}
 .tbar b{font-size:12.5px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}
 .tbar .tico{font-size:14px}
@@ -86,6 +89,21 @@ body.nocrt #screen{animation:none}
 .statbox{border:2px solid;border-color:#808080 #fff #fff #808080;padding:8px 14px;text-align:center;flex:1;min-width:90px}
 .statbox b{display:block;font-size:20px;color:#000080}
 .statbox span{font-size:10.5px;color:#333}
+/* portfolio hub */
+.hub-head{display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:2px solid;border-color:#808080 #fff #fff #808080}
+.hub-avatar{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #000080;flex:0 0 56px}
+.hub-head h2{font-size:15px;color:#000080;letter-spacing:.5px}
+.hub-head p{font-size:11px;color:#444;margin-top:2px}
+.hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:14px}
+.hub-tile{background:#fff;border:2px solid;border-color:#fff #404040 #404040 #fff;padding:16px 8px;text-align:center;cursor:pointer;user-select:none}
+.hub-tile:active{border-color:#404040 #fff #fff #404040}
+.hub-tile:hover{background:#eef2ff}
+.hub-tile .em{font-size:36px;display:block;margin-bottom:6px}
+.hub-tile b{font-size:12px;color:#000}
+/* quicklaunch */
+#quicklaunch{display:flex;gap:5px}
+.qbtn{font-size:16px;padding:4px 9px;background:#c0c0c0;border:2px solid;border-color:#fff #404040 #404040 #fff;cursor:pointer;text-decoration:none;color:#000;display:flex;align-items:center}
+.qbtn:active{border-color:#404040 #fff #fff #404040}
 /* terminal */
 #termwrap{background:#000;color:#3ddc55;font-family:'VT323',monospace;font-size:17px;padding:10px;height:100%;overflow:auto;cursor:text}
 #termwrap .dim{color:#1d7a30}
@@ -130,6 +148,7 @@ body.nocrt #screen{animation:none}
       <div id="bootmsg">Loading chemistry drivers…</div>
     </div>
     <div id="desktop" class="phase">
+      <canvas id="molbg"></canvas>
       <div id="icons"></div>
       <div id="winlayer" style="position:absolute;inset:0;bottom:42px;pointer-events:none"></div>
       <div id="startmenu">
@@ -152,6 +171,10 @@ body.nocrt #screen{animation:none}
       <div id="taskbar">
         <div id="startbtn">🧪 Start</div>
         <div id="tasks"></div>
+        <div id="quicklaunch">
+          <a class="qbtn" href="mailto:tonminhbear@gmail.com" title="Email Duc Minh">✉️</a>
+          <div class="qbtn" id="qgallery" title="Photo Gallery">🖼️</div>
+        </div>
         <div id="clock">--:--</div>
       </div>
     </div>
@@ -205,6 +228,92 @@ const DATA = [
 ];
 const AWARDS = DATA.filter(d=>d.type==="award"), ACTS = DATA.filter(d=>d.type==="activity");
 const ALLIMG = [...new Set(DATA.flatMap(d=>d.assets))];
+
+/* ============ glowing chemical-molecule background ============ */
+(function(){
+ const canvas=document.getElementById("molbg");
+ const ctx=canvas.getContext("2d");
+ let W=0,H=0,DPR=Math.min(window.devicePixelRatio||1,2);
+ function resize(){
+   const r=canvas.parentElement.getBoundingClientRect();
+   W=r.width;H=r.height;
+   canvas.width=W*DPR;canvas.height=H*DPR;
+   canvas.style.width=W+"px";canvas.style.height=H+"px";
+   ctx.setTransform(DPR,0,0,DPR,0,0);
+ }
+ window.addEventListener("resize",resize);
+ resize();
+ window.__molResize = resize;
+
+ const COLORS=["#3ddc55","#4fd8ff","#a855f7","#ffb000","#ff5da2"];
+ const rand=(a,b)=>a+Math.random()*(b-a);
+ const pick=()=>COLORS[Math.floor(Math.random()*COLORS.length)];
+
+ const N=48;
+ const pts=Array.from({length:N},()=>({
+   x:rand(0,W||900),y:rand(0,H||600),vx:rand(-.12,.12),vy:rand(-.12,.12),
+   r:rand(1.4,3),c:pick()
+ }));
+
+ const HEX=Array.from({length:10},()=>({
+   x:rand(0,W||900),y:rand(0,H||600),rad:rand(32,68),
+   a:rand(0,Math.PI*2),va:rand(-.0015,.0015),
+   vx:rand(-.05,.05),vy:rand(-.05,.05),c:pick()
+ }));
+
+ function hexPts(cx,cy,r,a){
+   const p=[];
+   for(let i=0;i<6;i++){const t=a+i*Math.PI/3;p.push([cx+Math.cos(t)*r,cy+Math.sin(t)*r]);}
+   return p;
+ }
+
+ function step(){
+   requestAnimationFrame(step);
+   if(!W||!H)return;
+   ctx.clearRect(0,0,W,H);
+
+   pts.forEach(p=>{
+     p.x+=p.vx;p.y+=p.vy;
+     if(p.x<0||p.x>W)p.vx*=-1;
+     if(p.y<0||p.y>H)p.vy*=-1;
+   });
+   for(let i=0;i<N;i++){
+     for(let j=i+1;j<N;j++){
+       const a=pts[i],b=pts[j],d=Math.hypot(a.x-b.x,a.y-b.y);
+       if(d<130){
+         ctx.strokeStyle=`rgba(120,210,230,${(1-d/130)*0.22})`;
+         ctx.lineWidth=1;
+         ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+       }
+     }
+   }
+   pts.forEach(p=>{
+     ctx.save();
+     ctx.shadowColor=p.c;ctx.shadowBlur=8;
+     ctx.fillStyle=p.c;
+     ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+     ctx.restore();
+   });
+
+   HEX.forEach(h=>{
+     h.x+=h.vx;h.y+=h.vy;h.a+=h.va;
+     if(h.x<-90)h.x=W+90;if(h.x>W+90)h.x=-90;
+     if(h.y<-90)h.y=H+90;if(h.y>H+90)h.y=-90;
+     const p=hexPts(h.x,h.y,h.rad,h.a);
+     ctx.save();
+     ctx.shadowColor=h.c;ctx.shadowBlur=12;
+     ctx.strokeStyle=h.c;ctx.globalAlpha=.35;ctx.lineWidth=1.4;
+     ctx.beginPath();
+     p.forEach(([x,y],i)=>i===0?ctx.moveTo(x,y):ctx.lineTo(x,y));
+     ctx.closePath();ctx.stroke();
+     ctx.globalAlpha=.85;
+     p.forEach(([x,y])=>{ctx.beginPath();ctx.arc(x,y,2.6,0,Math.PI*2);ctx.fillStyle=h.c;ctx.fill();});
+     ctx.restore();
+   });
+ }
+ requestAnimationFrame(step);
+})();
+
 
 /* ============ power / boot ============ */
 const $ = s=>document.querySelector(s);
@@ -265,6 +374,7 @@ function bootUp(){
 function enterDesktop(){
  if(phase==="desktop")return;
  show("desktop");
+ if(window.__molResize)window.__molResize();
  if(!enterDesktop.done){enterDesktop.done=true;openApp("welcome");}
 }
 function powerOff(){
@@ -287,7 +397,7 @@ function openWin(id,icon,title,html,w){
  const el=document.createElement("div");el.className="win";el.style.width=(w||520)+"px";
  el.style.left=Math.min(120+(off%180),340)+"px"; el.style.top=Math.min(20+(off%110),150)+"px"; off+=42;
  el.innerHTML=`<div class="tbar"><span class="tico">${icon}</span><b>${title}</b>
-   <div class="tbtn" data-a="min">_</div><div class="tbtn" data-a="x">✕</div></div>
+   <div class="tbtn" data-a="min">_</div><div class="tbtn" data-a="max">▢</div><div class="tbtn" data-a="x">✕</div></div>
    <div class="wbody">${html}</div>`;
  winlayer.appendChild(el);
  const tb=document.createElement("div");tb.className="task";tb.textContent=`${icon} ${title}`;
@@ -297,10 +407,20 @@ function openWin(id,icon,title,html,w){
  el.addEventListener("pointerdown",()=>focusWin(id));
  el.querySelector('[data-a="x"]').onclick=e=>{e.stopPropagation();closeWin(id);};
  el.querySelector('[data-a="min"]').onclick=e=>{e.stopPropagation();el.style.display="none";tb.classList.remove("act");};
+ el.querySelector('[data-a="max"]').onclick=e=>{
+   e.stopPropagation();
+   if(el.classList.contains("maxed")){
+     el.classList.remove("maxed");
+     el.style.left=el.dataset.pl; el.style.top=el.dataset.pt; el.style.width=el.dataset.pw;
+   }else{
+     el.dataset.pl=el.style.left; el.dataset.pt=el.style.top; el.dataset.pw=el.style.width;
+     el.classList.add("maxed");
+   }
+ };
  // drag
  const bar=el.querySelector(".tbar");
  bar.addEventListener("pointerdown",e=>{
-   if(e.target.classList.contains("tbtn"))return;
+   if(e.target.classList.contains("tbtn")||el.classList.contains("maxed"))return;
    const r=el.getBoundingClientRect(), pr=winlayer.getBoundingClientRect();
    const dx=e.clientX-r.left, dy=e.clientY-r.top;
    function mv(ev){el.style.left=Math.max(-60,Math.min(pr.width-80,ev.clientX-pr.left-dx))+"px";
@@ -343,12 +463,28 @@ function openFolder(id){
 }
 window.openFolder=openFolder;
 const APPS={
- welcome:{icon:"💾",title:"Welcome.txt — Notepad",w:470,html:`
-   <div class="wbody white" style="margin:0">
-   <p><b>Welcome to MinhOS 98!</b> 🧪</p>
-   <p>You are inside the interactive portfolio computer of <b>Ton Duc Minh</b> — Chemistry specialization, Hanoi-Amsterdam High School for the Gifted.</p>
-   <p>▸ Click the desktop icons to explore.<br>▸ Drag windows around by their title bars.<br>▸ Type <b>help</b> in the MS-DOS Prompt.<br>▸ Start menu: more goodies + turn the CRT effect off if the stripes bother you.</p>
-   <p style="color:#555;font-size:11px">Tip: the power button on the monitor actually works.</p></div>`},
+ welcome:{icon:"🧪",title:"My Chemical Portfolio - v0.98",w:460,html:`
+   <div class="hub-head">
+     <img class="hub-avatar" src="assets/images/jdie-personal.jpg" alt="Duc Minh" onerror="this.style.display='none'">
+     <div><h2>WELCOME TO MINH'S RESEARCH LAB</h2><p>Chemistry specialization · Hanoi-Amsterdam HS for the Gifted</p></div>
+   </div>
+   <div class="hub-grid">
+     <div class="hub-tile" onclick="openApp('about')"><span class="em">👤</span><b>About.exe</b></div>
+     <div class="hub-tile" onclick="openApp('lab')"><span class="em">⚗️</span><b>Research.lab</b></div>
+     <div class="hub-tile" onclick="openApp('awards')"><span class="em">🏆</span><b>Awards.sys</b></div>
+     <div class="hub-tile" onclick="openApp('acts')"><span class="em">🌍</span><b>Activities.log</b></div>
+   </div>
+   <p style="padding:0 14px 12px;color:#555;font-size:11px">Tip: Start menu has more (Gallery, MS-DOS Prompt) · the power button on the monitor actually works.</p>`},
+ recycle:{icon:"🗑️",title:"Recycle Bin",w:320,html:`<p style="padding:26px 10px;text-align:center;color:#555">The Recycle Bin is empty.</p>`},
+ mydocs:{icon:"📁",title:"My Documents",w:520,html:`
+   <img class="ph" src="assets/images/jdie-personal.jpg" data-v="assets/images/jdie-personal.jpg" alt="Duc Minh" style="max-height:230px;object-fit:cover;width:100%">
+   <div class="statrow">
+     <div class="statbox"><b>9.6</b><span>GPA (Grade 9–11)</span></div>
+     <div class="statbox"><b>1550</b><span>SAT Score</span></div>
+     <div class="statbox"><b>Top 5</b><span>Chemistry HN-Ams</span></div>
+   </div>
+   <p>I am studying in the <b>Chemistry Specialization</b> class at Hanoi-Amsterdam High School for the Gifted, aiming for <b>Chemical Engineering & Bio-Product Engineering</b>.</p>
+   <p>📧 <a href="mailto:tonminhbear@gmail.com">tonminhbear@gmail.com</a></p>`},
  about:{icon:"👤",title:"About Duc Minh — Properties",w:520,html:`
    <img class="ph" src="assets/images/jdie-personal.jpg" data-v="assets/images/jdie-personal.jpg" alt="Duc Minh" style="max-height:230px;object-fit:cover;width:100%">
    <div class="statrow">
@@ -386,13 +522,17 @@ function openApp(id){
 }
 
 /* icons */
-const ICONS=[["about","👤","About<br>Duc Minh"],["lab","⚗️","Research<br>Lab"],["awards","🏆","Awards"],["acts","🌍","Activities"],
- ["gallery","🖼️","Photo<br>Gallery"],["term","🖥️","MS-DOS<br>Prompt"],["classic","📜","Classic<br>Site"],["welcome","💾","Welcome.txt"]];
+const ICONS=[["recycle","🗑️","Recycle<br>Bin"],["mydocs","📁","My<br>Documents"],["term","🖥️","MS-DOS<br>Prompt"],
+ ["lab","🧪","Periodic<br>Table.lnk"],["classic","📜","Classic<br>website.url"]];
 const iconsEl=$("#icons");
 ICONS.forEach(([id,em,label])=>{
  const d=document.createElement("div");d.className="icon";
  d.innerHTML=`<span class="em">${em}</span><span>${label}</span>`;
- const launch=()=>id==="classic"?location.href="classic.html":openApp(id);
+ const launch=()=>{
+   if(id==="classic"){
+     const a=document.createElement("a");a.href="classic.html";document.body.appendChild(a);a.click();a.remove();
+   }else openApp(id);
+ };
  d.addEventListener("click",()=>{document.querySelectorAll(".icon").forEach(i=>i.style.background="");d.style.background="rgba(255,255,255,.15)";launch();});
  iconsEl.appendChild(d);
 });
@@ -406,6 +546,8 @@ $("#crtmi").onclick=()=>{
  document.body.classList.toggle("nocrt");
  $("#crtmi").querySelector("span").textContent="CRT effect: "+(document.body.classList.contains("nocrt")?"Off":"On");
 };
+
+$("#qgallery").addEventListener("click",()=>openApp("gallery"));
 
 /* clock */
 setInterval(()=>{const d=new Date();$("#clock").textContent=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});},1000);
