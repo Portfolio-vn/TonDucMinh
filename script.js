@@ -58,10 +58,10 @@ const studentData = [
     {
         id: "academic_sp",
         type: "award",
-        title: "Academic Excellence & Valedictorian",
+        title: "Academic Chemistry Awards",
         category: "Academic",
         date: "2024-2025",
-        desc: "Valedictorian (Chemistry) at HNUE High School for the Gifted. Ranked Top 5 in Chemistry at Hanoi-Amsterdam. Won District-level Excellence Award.",
+        desc: "Academic recognition in Chemistry, including city- and district-level Excellent Student awards.",
         thumb: "assets/images/academic-akhoa-sp.jpg",
         assets: [
             "assets/images/academic-akhoa-sp.jpg",
@@ -403,7 +403,7 @@ function triggerEffervescent() {
 
     setTimeout(() => {
         const diff = Math.abs(perilla - houttuynia);
-        let color = '#8b5cf6', text = '';
+        let color = '#08775a', text = '';
         if (diff < 15) {
             color = '#10b981';
             text = `<strong>Success! Efficacy: 96.5%</strong><br>Optimal synergy achieved between Perillaldehyde and Houttuynin. Complete effervescent reaction.`;
@@ -475,9 +475,9 @@ function initChemicalCanvas() {
     const ctx = canvas.getContext('2d');
     let particles = [];
     const elements = [
-        { name: 'C', color: '#8b5cf6', radius: 8, valency: 4 }, // Carbon - Purple accent
+        { name: 'C', color: '#08775a', radius: 8, valency: 4 }, // Carbon - Green accent
         { name: 'H', color: '#a78bfa', radius: 5, valency: 1 }, // Hydrogen - Light Purple
-        { name: 'O', color: '#ec4899', radius: 7, valency: 2 }, // Oxygen - Pink accent
+        { name: 'O', color: '#b91c1c', radius: 7, valency: 2 }, // Oxygen - Red accent
         { name: 'N', color: '#3b82f6', radius: 7.5, valency: 3 } // Nitrogen - Blue accent
     ];
 
@@ -581,7 +581,7 @@ function initChemicalCanvas() {
                 const maxDist = 200; // Increased from 110 to allow links to form easily
                 if (dist < maxDist) {
                     const alpha = (1 - dist / maxDist) * 0.15; // Subtle connections
-                    ctx.strokeStyle = `rgba(139, 92, 246, ${alpha})`;
+                    ctx.strokeStyle = `rgba(8, 119, 90, ${alpha})`;
                     ctx.lineWidth = 1;
 
                     if (dist < 70 && (p1.element.valency >= 2 && p2.element.valency >= 2)) {
